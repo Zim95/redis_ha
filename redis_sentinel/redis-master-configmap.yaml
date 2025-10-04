@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-master-config
+  namespace: ${NAMESPACE}
+data:
+  redis.conf: |
+    # Redis Master Configuration
+    port 6379
+    bind 0.0.0.0
+    
+    # Authentication
+    requirepass ${REDIS_MASTER_PASSWORD}
+    
+    # Replication settings
+    masterauth ${REDIS_MASTER_PASSWORD}
+    
+    # Persistence
+    save 900 1
+    save 300 10
+    save 60 10000
+    
+    # Memory management
+    maxmemory-policy allkeys-lru
+    
+    # Networking
+    tcp-keepalive 300
+    
+    # Logging
+    loglevel notice

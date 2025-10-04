@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-sentinel-config
+  namespace: ${NAMESPACE}
+data:
+  sentinel.conf: |
+    port 26379
+    
+    # Sentinel configuration
+    sentinel monitor mymaster redis-master-service 6379 2
+    sentinel auth-user mymaster ${REDIS_USER}
+    sentinel auth-pass mymaster ${REDIS_MASTER_PASSWORD}
+    
+    # Sentinel settings
+    sentinel down-after-milliseconds mymaster 5000
+    sentinel failover-timeout mymaster 10000
+    sentinel parallel-syncs mymaster 1
+    
+    # Master configuration
+    masterauth ${REDIS_MASTER_PASSWORD}
+    
+    # Required password for Sentinel
+    requirepass ${REDIS_SENTINEL_PASSWORD}
+    
+    # Sentinel announce
+    sentinel announce-ip $(POD_IP)
+    sentinel announce-port 26379
