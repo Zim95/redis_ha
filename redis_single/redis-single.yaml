@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /data/browseterm-redis
+    path: ${REDIS_DATA_DIR}/browseterm-redis
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
